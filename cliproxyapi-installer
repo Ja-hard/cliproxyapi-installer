@@ -730,10 +730,18 @@ make_executable() {
 
 # Main installation function
 install_cliproxyapi() {
+    local command="$1"
     local current_version
     current_version=$(get_current_version)
     local is_upgrade=false
     local service_was_running=false
+    
+    # Check if attempting to upgrade when not installed
+    if [[ "$command" != "install" && "$current_version" == "none" ]]; then
+        log_error "CLIProxyAPI is not installed yet. Cannot upgrade."
+        log_info "To install CLIProxyAPI for the first time, run: $SCRIPT_NAME install"
+        exit 1
+    fi
     
     if [[ "$current_version" != "none" ]]; then
         log_info "Current CLIProxyAPI version: $current_version"
@@ -813,8 +821,10 @@ install_cliproxyapi() {
     # Make main executable executable
     chmod +x "${INSTALL_DIR}/cli-proxy-api"
     
-    # Create/update systemd service file
-    create_systemd_service "$INSTALL_DIR"
+    # Create/update systemd service file (only during fresh install)
+    if [[ "$command" == "install" ]]; then
+        create_systemd_service "$INSTALL_DIR"
+    fi
     
     # Write version file
     write_version_file "$INSTALL_DIR" "$version"
@@ -955,9 +965,11 @@ trap cleanup EXIT
 
 # Main script logic
 main() {
-    case "${1:-install}" in
+    local command="${1:-upgrade}"
+    
+    case "$command" in
         "install"|"upgrade")
-            install_cliproxyapi
+            install_cliproxyapi "$command"
             ;;
         "status")
             show_status
@@ -1029,7 +1041,8 @@ main() {
 Usage: $SCRIPT_NAME [COMMAND] [OPTIONS]
 
 Commands:
-  install, upgrade    Install or upgrade CLIProxyAPI (default)
+  upgrade            Upgrade CLIProxyAPI (default, requires existing installation)
+  install            Install CLIProxyAPI for the first time
   status             Show current installation status
   auth               Show authentication setup information
   check-config       Check configuration and API keys
@@ -1058,7 +1071,8 @@ Supported Platforms:
   - Linux: amd64, arm64
 
 Examples:
-  $SCRIPT_NAME              # Install or upgrade
+  $SCRIPT_NAME              # Upgrade to latest version (default)
+  $SCRIPT_NAME install      # Install for the first time
   $SCRIPT_NAME status       # Show current status
   $SCRIPT_NAME auth         # Show authentication info
   $SCRIPT_NAME check-config # Check configuration

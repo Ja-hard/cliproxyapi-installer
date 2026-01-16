@@ -1,3 +1,9 @@
+# Rev
+1. Default Mode: intstall -> upgrade
+2. Stop install if do not detect "install" in args while not already installed
+3. Remove systemd service refresh in upgrade mode.
+4. Show service status after upgrade/install.
+
 # CLIProxyAPI Linux Installer
 
 A comprehensive Linux installation script for [CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI) that automates installation, upgrades, and management of the CLIProxyAPI service.
@@ -76,16 +82,16 @@ The installer script supports multiple commands:
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `install` / `upgrade` | Install or upgrade CLIProxyAPI (default) |
-| `status` | Show current installation status |
-| `auth` | Display authentication setup information |
-| `check-config` | Verify configuration and API keys |
-| `generate-key` | Generate a new API key |
-| `manage-docs` | Manage documentation and check consistency |
-| `uninstall` | Remove CLIProxyAPI completely |
-| `-h` / `--help` | Show help message |
+| Command               | Description                                |
+| --------------------- | ------------------------------------------ |
+| `install` / `upgrade` | Install or upgrade CLIProxyAPI (default)   |
+| `status`              | Show current installation status           |
+| `auth`                | Display authentication setup information   |
+| `check-config`        | Verify configuration and API keys          |
+| `generate-key`        | Generate a new API key                     |
+| `manage-docs`         | Manage documentation and check consistency |
+| `uninstall`           | Remove CLIProxyAPI completely              |
+| `-h` / `--help`       | Show help message                          |
 
 ### Examples
 
@@ -392,11 +398,11 @@ During upgrades, the installer provides intelligent service management:
 
 ### Upgrade Behavior
 
-| Scenario | Service Action | Config Action |
-|----------|----------------|---------------|
-| Service running | Stop → Upgrade → Restart | Preserved with backup |
-| Service stopped | Upgrade only | Preserved with backup |
-| First install | N/A | Created from example with generated keys |
+| Scenario        | Service Action           | Config Action                            |
+| --------------- | ------------------------ | ---------------------------------------- |
+| Service running | Stop → Upgrade → Restart | Preserved with backup                    |
+| Service stopped | Upgrade only             | Preserved with backup                    |
+| First install   | N/A                      | Created from example with generated keys |
 
 > **🔒 Your configuration is safe**: The installer uses a priority system that always preserves existing user configurations over example files.
 

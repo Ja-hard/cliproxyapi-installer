@@ -866,6 +866,12 @@ install_cliproxyapi() {
         show_authentication_info
         show_quick_start "$INSTALL_DIR"
     fi
+
+    # Show service status
+    echo
+    log_info "Service Status:"
+    # Limit log output to recent 20 lines, no pager
+    systemctl --user status cliproxyapi.service --no-pager -n 20 || true
 }
 
 # Show current installation status

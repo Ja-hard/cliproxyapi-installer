@@ -751,6 +751,8 @@ install_cliproxyapi() {
         if is_service_running; then
             service_was_running=true
             log_info "Service is currently running and will be restarted after upgrade"
+        else
+            log_info "Service is not running. It will remain stopped after upgrade"
         fi
     else
         log_info "CLIProxyAPI not installed, performing fresh installation"
@@ -779,6 +781,9 @@ install_cliproxyapi() {
     # Check if already up to date
     if [[ "$is_upgrade" == true && "$current_version" == "$version" ]]; then
         log_success "CLIProxyAPI is already up to date (version $version)"
+        log_info "Service Status:"
+        # Limit log output to recent 20 lines, no pager
+        systemctl --user status cliproxyapi.service --no-pager -n 20 || true
         return
     fi
     

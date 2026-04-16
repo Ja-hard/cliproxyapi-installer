@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import fnmatch
 import glob
 import json
 import os
@@ -18,7 +17,6 @@ FILENAME_PRIORITY_RULES = {
 }
 
 # email 白名单模式。支持 fnmatch 风格通配符，命中后会直接覆盖为 WHITELIST_PRIORITY。
-# 例如："*@gmail.com"、"jahard*"、"*foxmail.com"
 EMAIL_WHITELIST = [
     # "*@gmail.com",
     "gmail.com",
@@ -29,8 +27,10 @@ WHITELIST_PRIORITY = -1
 
 
 def match_email_whitelist(email):
+    normalized_email = str(email).strip().lower()
     for pattern in EMAIL_WHITELIST:
-        if fnmatch.fnmatch(email, pattern.lower()):
+        normalized_pattern = str(pattern).strip().lower()
+        if normalized_pattern and normalized_pattern in normalized_email:
             return pattern
 
     return None

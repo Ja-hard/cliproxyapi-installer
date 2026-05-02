@@ -7,7 +7,7 @@
 set -euo pipefail
 
 # Configuration
-REPO_OWNER="router-for-me"
+REPO_OWNER="Fwindy"
 REPO_NAME="CLIProxyAPI"
 INSTALL_DIR="$HOME/cliproxyapi"
 API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest"

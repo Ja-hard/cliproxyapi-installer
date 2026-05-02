@@ -13,12 +13,11 @@ DEFAULT_PRIORITY = 0
 
 # 文件名命中规则。按顺序匹配，命中后使用对应 priority。
 FILENAME_PRIORITY_RULES = {
-    "plus": 20,
+    "plus": 10,
 }
 
 # email 白名单模式。支持 fnmatch 风格通配符，命中后会直接覆盖为 WHITELIST_PRIORITY。
 EMAIL_WHITELIST = [
-    # "*@gmail.com",
     "gmail.com",
     "foxmail.com",
     "qq.com",
